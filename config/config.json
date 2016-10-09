@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "dev_user",
+    "password": "Development1",
+    "database": "labels_dev",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "dev_user",
+    "password": "Development1",
+    "database": "labels_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "dev_user",
+    "password": "Development1",
+    "database": "labels_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

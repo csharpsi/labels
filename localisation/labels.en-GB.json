@@ -1,0 +1,17 @@
+{
+    "title": "Express UK",
+
+    "validation_user_passwordTooShort": "Please choose a longer password",
+
+    "view_label_authSignInTitle": "Sign In",
+
+    "view_label_newUserEmail": "Email Address",
+    "view_label_newUserEmailPlaceholder": "Enter your email address",
+    "view_label_newUserFirstName": "First Name",
+    "view_label_newUserFirstNamePlaceholder": "What's your first name?",
+    "view_label_newUserLastName": "Last Name",
+    "view_label_newUserLastNamePlaceholder": "What's your last name?",
+    "view_label_newUserPassword": "Password",
+    "view_label_newUserPasswordPlaceholder": "Choose a new password",
+    "view_label_newUserSubmitButton": "Create new user"
+}

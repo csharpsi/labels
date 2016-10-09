@@ -1,0 +1,17 @@
+{
+    "title": "Express USA BABY!",
+
+    "validation_user_passwordTooShort": "Your password isn't long enough",
+
+    "view_label_authSignInTitle": "Log In",
+
+    "view_label_newUserEmail": "Your email",
+    "view_label_newUserEmailPlaceholder": "Put your email address here",
+    "view_label_newUserFirstName": "Your first name",
+    "view_label_newUserFirstNamePlaceholder": "Put your first name here",
+    "view_label_newUserLastName": "Your last name",
+    "view_label_newUserLastNamePlaceholder": "Put your last name here",
+    "view_label_newUserPassword": "New Password",
+    "view_label_newUserPasswordPlaceholder": "Choose a new password",
+    "view_label_newUserSubmitButton": "Create new user"
+}
