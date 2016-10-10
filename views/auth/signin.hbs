@@ -1,1 +1,19 @@
 <h1>{{cat 'view_label_authSignInTitle'}}</h1>
+
+{{#if err}}
+<p style="color:red">{{err}}</p>
+{{/if}}
+
+<form action="/auth/signin" method="POST">
+    <div>
+        <label for="email">{{cat 'label_signIn_email'}}</label>
+        <input type="email" id="email" name="email" />
+    </div>
+    <div>
+        <label for="password">{{cat 'label_signIn_password'}}</label>
+        <input type="password" id="password" name="password"/>
+    </div>
+    <div>
+        <button type="submit">{{cat 'label_signIn_submit'}}</button>
+    </div>
+</form>

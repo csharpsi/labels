@@ -7,7 +7,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var Catalogue = require('./catalogue');
+var hbsRegister = require('./config/handlebarsHelpers');
 var hbs = require('hbs');
+var models = require('./models');
 
 var app = express();
 
@@ -15,16 +17,14 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-hbs.registerHelper('cat', (key) => {
-  return Catalogue.getString(key);
-});
+hbsRegister.registerHelpers();
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('i am the lizard queen'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
@@ -33,9 +33,28 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
-app.use('/accounts', require('./routes/accounts'));
+let authenticate = function(req, res, next){
+    let token = req.signedCookies["_uauth"];
+    if(!token){
+        return res.redirect('/auth/signin');
+    }
+
+    let obj = JSON.parse(new Buffer(token, 'base64').toString());
+    models.User.findById(obj.uid).then((user) => {
+        if(!user || user.email !== obj.uem){
+            res.clearCookie('_uauth');
+            return res.redirect('/auth/signin');
+        }
+
+        req.User = user;
+        res.locals = {currentUser: user};
+        next();
+    });
+};
+
+app.use('/', authenticate, require('./routes/index'));
+app.use('/users', authenticate, require('./routes/users'));
+app.use('/accounts', authenticate, require('./routes/accounts'));
 app.use('/auth', require('./routes/auth'));
 app.use('/api', require('./routes/api/index'));
 

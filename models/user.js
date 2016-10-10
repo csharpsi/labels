@@ -43,7 +43,7 @@ module.exports = function (sequelize, DataTypes) {
     }, {
             tableName: 'loc_users',
             instanceMethods: {
-                authenticate: (value) => {
+                authenticate: function(value) {
                     if (bcrypt.compareSync(value, this.passwordHash)) {
                         return this;
                     }

@@ -2,6 +2,7 @@
     "title": "Express UK",
 
     "validation_user_passwordTooShort": "Please choose a longer password",
+    "validation_auth_incorrectUserOrPassword": "Incorrect username or password",
 
     "view_label_authSignInTitle": "Sign In",
 
@@ -13,5 +14,9 @@
     "view_label_newUserLastNamePlaceholder": "What's your last name?",
     "view_label_newUserPassword": "Password",
     "view_label_newUserPasswordPlaceholder": "Choose a new password",
-    "view_label_newUserSubmitButton": "Create new user"
+    "view_label_newUserSubmitButton": "Create new user",
+
+    "label_signIn_email": "Email",
+    "label_signIn_password": "Password",
+    "label_signIn_submit": "Sign In"
 }
