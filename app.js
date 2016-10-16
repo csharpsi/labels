@@ -36,17 +36,18 @@ app.use((req, res, next) => {
 let authenticate = function(req, res, next){
     let token = req.signedCookies["_uauth"];
     if(!token){
-        return res.redirect('/auth/signin');
+        res.redirect('/auth/signin');
+        return;
     }
 
     let obj = JSON.parse(new Buffer(token, 'base64').toString());
-    models.User.findById(obj.uid).then((user) => {
+    models.user.findById(obj.uid).then((user) => {
         if(!user || user.email !== obj.uem){
             res.clearCookie('_uauth');
             return res.redirect('/auth/signin');
         }
 
-        req.User = user;
+        req.user = user;
         res.locals = {currentUser: user};
         next();
     });

@@ -2,7 +2,6 @@
 
 var express = require('express');
 var router = express.Router();
-var labels = require('./labels');
 var models = require('../../models');
 
 router.use((req, res, next) => {
@@ -11,7 +10,11 @@ router.use((req, res, next) => {
 
 });
 
-router.use('/labels', labels);
+/**
+ * /api/labels routes
+ */
+router.use('/labels', require('./labels'));
+
 
 router.get('/', function(req, res, next) {
   res.render('apidocs');

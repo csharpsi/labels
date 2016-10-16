@@ -12,7 +12,7 @@ var attributes = ['key', ['text', 'value']]; // select key, text as value from..
  */
 router.get('/:lang', (req, res) => {
     const where = { lang: req.params.lang };
-    models.Label.findAll({attributes, where})
+    models.label.findAll({attributes, where})
     .then((labels) => {
         res.status(200).json({result: toResult(labels), language: req.params.lang});
     })
@@ -26,7 +26,7 @@ router.get('/:lang', (req, res) => {
  */
 router.get('/:lang/type/:type', (req, res) => {
     const where = {lang: req.params.lang, type: req.params.type};
-    models.Label.findAll({attributes, where})
+    models.label.findAll({attributes, where})
     .then((labels) => {
         res.status(200).json({result: toResult(labels), language: req.params.lang, type: req.params.type});
     })
@@ -40,7 +40,7 @@ router.get('/:lang/type/:type', (req, res) => {
  */
 router.get('/:lang/namespace/:ns', (req, res) => {
     const where = {lang: req.params.lang, namespace: req.params.ns};
-    models.Label.findAll({attributes, where})
+    models.label.findAll({attributes, where})
     .then((labels) => {
         res.status(200).json({result: toResult(labels), language: req.params.lang, namespace: req.params.ns});
     })
@@ -54,7 +54,7 @@ router.get('/:lang/namespace/:ns', (req, res) => {
  */
 router.get('/:lang/type/:type/namespace/:ns', (req, res) => {
     const where = {lang: req.params.lang, type: req.params.type, namespace: req.params.ns};
-    models.Label.findAll({attributes, where})
+    models.label.findAll({attributes, where})
     .then((labels) => {
         res.status(200).json({result: toResult(labels), language: req.params.lang, type: req.params.type, namespace: req.params.ns});
     })
@@ -80,8 +80,8 @@ router.post('/__install-data', (req, res) => {
         installData = installData.concat(dictionary);
     });
 
-    models.Label.destroy({truncate: true}).then(() => {
-        models.Label.bulkCreate(installData)
+    models.label.destroy({truncate: true}).then(() => {
+        models.label.bulkCreate(installData)
         .then(() => {
             res.status(201).json({rowCount: installData.length});
         })

@@ -1,9 +1,33 @@
 'use strict';
 let Catalogue = require('../catalogue');
 let bcrypt = require('bcrypt-nodejs');
+let model = require('./base');
 
-module.exports = function (sequelize, DataTypes) {
-    var User = sequelize.define('User', {
+let setPasswordHash = (user, options, cb) => {
+    bcrypt.hash(user.get('password'), user.get('salt'), null, (err, hash) => {
+        if (err) return cb(err);
+        user.set('passwordHash', hash);
+        return cb(null, options);
+    });
+};
+
+let buildUser = (user, options, cb) => {
+    user.email = user.email.toLowerCase();
+
+    if (!user.salt) {
+        user.salt = bcrypt.genSaltSync();
+    }
+
+    if (user.password) {
+        setPasswordHash(user, options, cb);
+    }
+    else {
+        return cb(null, options);
+    }
+};
+
+let definition = (sequelize, DataTypes) => {
+    return {
         email: {
             type: DataTypes.TEXT,
             allowNull: false,
@@ -40,50 +64,29 @@ module.exports = function (sequelize, DataTypes) {
                 notEmpty: true
             }
         }
-    }, {
-            tableName: 'loc_users',
-            instanceMethods: {
-                authenticate: function(value) {
-                    if (bcrypt.compareSync(value, this.passwordHash)) {
-                        return this;
-                    }
-                    else {
-                        return false;
-                    }
-                }
-            },
-            classMethods: {
-                associate: function (models) {
-                    this.hasMany(models.Account);
-                }
-            }
-        });
-
-    let setPasswordHash = (user, options, cb) => {
-        bcrypt.hash(user.get('password'), user.get('salt'), null, (err, hash) => {
-            if (err) return cb(err);
-            user.set('passwordHash', hash);
-            return cb(null, options);
-        });
     };
-
-    let buildUser = (user, options, cb) => {
-        user.email = user.email.toLowerCase();
-
-        if (!user.salt) {
-            user.salt = bcrypt.genSaltSync();
-        }
-
-        if (user.password) {
-            setPasswordHash(user, options, cb);
-        }
-        else {
-            return cb(null, options);
-        }
-    };
-
-    User.beforeCreate(buildUser);
-    User.beforeUpdate(buildUser);
-
-    return User;
 };
+
+let config = {
+    instanceMethods: {
+        authenticate: function (value) {
+            if (bcrypt.compareSync(value, this.passwordHash)) {
+                return this;
+            }
+            else {
+                return false;
+            }
+        }
+    },
+    classMethods: {
+        associate: function (models) {
+            this.belongsTo(models.account);
+        }
+    },
+    extend: function () {
+        this.beforeCreate(buildUser);
+        this.beforeUpdate(buildUser);
+    }
+};
+
+module.exports = model('user', definition, config);

@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/detail/:userId', (req, res) => {
-  models.User.findById(req.params.userId)
+  models.user.findById(req.params.userId)
   .then((instance) => {
     if(!instance){
       res.redirect('/404');
@@ -36,7 +36,7 @@ router.post('/new', (req, res) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName
   };
-  models.User.create(newUser)
+  models.user.create(newUser)
     .then((user) => {
       res.redirect(`/users/detail/${user.id}`);
     })

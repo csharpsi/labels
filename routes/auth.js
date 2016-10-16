@@ -16,7 +16,7 @@ router.get('/signin', (req, res, next) => {
  * Handle sign in form submission
  */
 router.post('/signin', (req, res) => {    
-    models.User.findOne({where: {email: req.body.email}}).then((user) => {
+    models.user.findOne({where: {email: req.body.email}}).then((user) => {
         if(!user || !user.authenticate(req.body.password)){
             return res.render('auth/signin', {err: Catalogue.getString('validation_auth_incorrectUserOrPassword')});
         }

@@ -1,18 +1,17 @@
 'use strict';
 
-module.exports = function(sequelize, DataTypes) {
-  var Account = sequelize.define('Account', {
-    apiKey: DataTypes.TEXT,
-    name: DataTypes.TEXT
-  }, {
-    tableName: 'loc_accounts',
+var model = require('./base');
+
+module.exports = model('account', (sequelize, DataTypes) => {
+    return {
+        apiKey: DataTypes.TEXT,
+        name: DataTypes.TEXT
+    }
+}, {    
     classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-        this.hasMany(models.Label);        
+      associate: function(models) {        
+        this.hasMany(models.label);
+        this.belongsTo(models.plan);        
       }
     }
-  });
-
-  return Account;
-};
+});
