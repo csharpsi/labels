@@ -2,6 +2,7 @@
 let Catalogue = require('../catalogue');
 let bcrypt = require('bcrypt-nodejs');
 let model = require('./base');
+let Sequelize = require('sequelize');
 
 let setPasswordHash = (user, options, cb) => {
     bcrypt.hash(user.get('password'), user.get('salt'), null, (err, hash) => {
@@ -26,45 +27,53 @@ let buildUser = (user, options, cb) => {
     }
 };
 
-let definition = (sequelize, DataTypes) => {
-    return {
-        email: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-            validate: {
-                isEmail: true
-            }
-        },
-        firstName: {
-            type: DataTypes.TEXT,
-            allowNull: false
-        },
-        lastName: {
-            type: DataTypes.TEXT,
-            allowNull: false
-        },
-        password: {
-            type: DataTypes.VIRTUAL,
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-                longEnough: (val) => {
-                    if (val.length < 7) {
-                        throw new Error(Catalogue.getString('validation_user_passwordTooShort'));
-                    }
+let definition = {
+    userId: {
+        type: Sequelize.BIGINT,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    email: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+        validate: {
+            isEmail: true
+        }
+    },
+    firstName: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    lastName: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    isAdmin: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
+    password: {
+        type: Sequelize.VIRTUAL,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+            longEnough: (val) => {
+                if (val.length < 7) {
+                    throw new Error(Catalogue.getString('validation_user_passwordTooShort'));
                 }
             }
-        },
-        salt: {
-            type: DataTypes.TEXT
-        },
-        passwordHash: {
-            type: DataTypes.TEXT,
-            validate: {
-                notEmpty: true
-            }
         }
-    };
+    },
+    salt: {
+        type: Sequelize.VIRTUAL
+    },
+    passwordHash: {
+        type: Sequelize.TEXT,
+        validate: {
+            notEmpty: true
+        }
+    }
 };
 
 let config = {
@@ -80,7 +89,7 @@ let config = {
     },
     classMethods: {
         associate: function (models) {
-            this.belongsTo(models.account);
+            this.belongsTo(models.account, { as: 'Account', foreignKey: 'account_id' });
         }
     },
     extend: function () {

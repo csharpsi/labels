@@ -1,16 +1,41 @@
 'use strict';
 
 var model = require('./base');
+var Sequelize = require('sequelize');
 
-module.exports = model('plan', (sequelize, DataTypes) => {
-    return {
-        name: DataTypes.TEXT,
-        description: DataTypes.TEXT,
-        price: {
-            type: DataTypes.DECIMAL(10, 2),
-            allowNull: true
+let definition = {
+    planId: {
+        type: Sequelize.TEXT,
+        primaryKey: true,
+        validate: {
+            isIn: ['Free', 'Mini', 'Pro', 'Enterprise']
         }
+    },
+    description: Sequelize.TEXT,
+    price: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: true
+    },
+    maxApiRequestsPerSecond: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    maxTypes: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    maxNamespacesPerType: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    maxLabelsPerNamespace: {
+        type: Sequelize.INTEGER,
+        allowNull: true
     }
-}, {
-        timestamps: false
-    });
+};
+
+let config = {
+    timestamps: false
+};
+
+module.exports = model('plan', definition, config);

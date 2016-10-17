@@ -1,0 +1,35 @@
+<h1>{{cat 'view_label_authSignInTitle'}}</h1>
+
+{{#if err}}
+<p style="color:red">{{err}}</p>
+{{/if}}
+
+<form action="/accounts/signup" method="POST">
+	<div>
+		<label for="email">{{cat 'view_label_newUserEmail'}}</label>
+		<input type="email" id="email" name="email" placeholder="{{cat 'view_label_newUserEmailPlaceholder'}}" value="{{account.email}}"
+		/>
+	</div>
+	<div>
+		<label for="firstName">{{cat 'view_label_newUserFirstName'}}</label>
+		<input type="text" id="firstName" name="firstName" placeholder="{{cat 'view_label_newUserFirstNamePlaceholder'}}" value="{{account.firstName}}"
+		/>
+	</div>
+	<div>
+		<label for="lastName">{{cat 'view_label_newUserLastName'}}</label>
+		<input type="text" id="lastName" name="lastName" placeholder="{{cat 'view_label_newUserLastNamePlaceholder'}}" value="{{account.lastName}}"
+		/>
+	</div>
+	<div>
+		<label for="accountName">{{cat 'label_signUp_accountName'}}</label>
+		<input type="text" id="accountName" name="accountName" value="{{account.account.name}}" placeholder="{{cat 'placeholder_signUp_accountName'}}"
+		/>
+	</div>
+	<div>
+		<label for="pwd">{{cat 'view_label_newUserPassword'}}</label>
+		<input type="text" id="pwd" name="pwd" placeholder="{{cat 'view_label_newUserPasswordPlaceholder'}}" />
+	</div>
+	<div>
+		<button type="submit">{{cat 'label_signUp_submit'}}</button>
+	</div>
+</form>

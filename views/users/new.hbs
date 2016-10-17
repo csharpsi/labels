@@ -5,21 +5,24 @@
 {{/if}}
 
 <form action="/users/new" method="POST">
-    <div>
-        <label for="email">{{cat 'view_label_newUserEmail'}}</label>
-        <input type="email" id="email" name="email" placeholder="{{cat 'view_label_newUserEmailPlaceholder'}}" value="{{user.email}}"/>
-    </div>
-    <div>
-        <label for="firstName">{{cat 'view_label_newUserFirstName'}}</label>
-        <input type="text" id="firstName" name="firstName" placeholder="{{cat 'view_label_newUserFirstNamePlaceholder'}}" value="{{user.firstName}}"/>
-    </div>
-    <div>
-        <label for="lastName">{{cat 'view_label_newUserLastName'}}</label>
-        <input type="text" id="lastName" name="lastName" placeholder="{{cat 'view_label_newUserLastNamePlaceholder'}}" value="{{user.lastName}}"/>
-    </div>
-    <div>
-        <label for="pwd">{{cat 'view_label_newUserPassword'}}</label>
-        <input type="text" id="pwd" name="pwd" placeholder="{{cat 'view_label_newUserPasswordPlaceholder'}}"/>
-    </div>
-    <button type="submit">{{cat 'view_label_newUserSubmitButton'}}</button>
-</form> 
+	<div>
+		<label for="email">{{cat 'view_label_newUserEmail'}}</label>
+		<input type="email" id="email" name="email" placeholder="{{cat 'view_label_newUserEmailPlaceholder'}}" value="{{profile.email}}"
+		/>
+	</div>
+	<div>
+		<label for="firstName">{{cat 'view_label_newUserFirstName'}}</label>
+		<input type="text" id="firstName" name="firstName" placeholder="{{cat 'view_label_newUserFirstNamePlaceholder'}}" value="{{profile.firstName}}"
+		/>
+	</div>
+	<div>
+		<label for="lastName">{{cat 'view_label_newUserLastName'}}</label>
+		<input type="text" id="lastName" name="lastName" placeholder="{{cat 'view_label_newUserLastNamePlaceholder'}}" value="{{profile.lastName}}"
+		/>
+	</div>
+	<div>
+		<label for="pwd">{{cat 'view_label_newUserPassword'}}</label>
+		<input type="text" id="pwd" name="pwd" placeholder="{{cat 'view_label_newUserPasswordPlaceholder'}}" />
+	</div>
+	<button type="submit">{{cat 'view_label_newUserSubmitButton'}}</button>
+</form>

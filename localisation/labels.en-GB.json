@@ -1,11 +1,8 @@
 {
     "title": "Express UK",
-
     "validation_user_passwordTooShort": "Please choose a longer password",
     "validation_auth_incorrectUserOrPassword": "Incorrect username or password",
-
     "view_label_authSignInTitle": "Sign In",
-
     "view_label_newUserEmail": "Email Address",
     "view_label_newUserEmailPlaceholder": "Enter your email address",
     "view_label_newUserFirstName": "First Name",
@@ -15,8 +12,10 @@
     "view_label_newUserPassword": "Password",
     "view_label_newUserPasswordPlaceholder": "Choose a new password",
     "view_label_newUserSubmitButton": "Create new user",
-
     "label_signIn_email": "Email",
     "label_signIn_password": "Password",
-    "label_signIn_submit": "Sign In"
+    "label_signIn_submit": "Sign In",
+    "label_signUp_accountName": "Company Name",
+    "placeholder_signUp_accountName": "Your company's name / account name",
+    "label_signUp_submit": "Create your free account"
 }

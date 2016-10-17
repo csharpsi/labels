@@ -28,42 +28,27 @@ app.use(cookieParser('i am the lizard queen'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  let lang = req.cookies.lang || "en-GB";
-  Catalogue.initialise(lang);  
-  next();
+    let lang = req.cookies.lang || "en-GB";
+    Catalogue.initialise(lang);
+    next();
 });
 
-let authenticate = function(req, res, next){
-    let token = req.signedCookies["_uauth"];
-    if(!token){
-        res.redirect('/auth/signin');
-        return;
-    }
+let authorize = require('./authorize');
 
-    let obj = JSON.parse(new Buffer(token, 'base64').toString());
-    models.user.findById(obj.uid).then((user) => {
-        if(!user || user.email !== obj.uem){
-            res.clearCookie('_uauth');
-            return res.redirect('/auth/signin');
-        }
-
-        req.user = user;
-        res.locals = {currentUser: user};
-        next();
-    });
-};
-
-app.use('/', authenticate, require('./routes/index'));
-app.use('/users', authenticate, require('./routes/users'));
-app.use('/accounts', authenticate, require('./routes/accounts'));
+/**
+ * Application routes
+ */
+app.use('/', require('./routes/index'));
+app.use('/users', authorize, require('./routes/users'));
+app.use('/accounts', require('./routes/accounts'));
 app.use('/auth', require('./routes/auth'));
 app.use('/api', require('./routes/api/index'));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handlers
@@ -71,23 +56,23 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.json({
-      message: err.message,
-      error: err
+    app.use(function (err, req, res, next) {
+        res.status(err.status || 500);
+        res.json({
+            message: err.message,
+            error: err
+        });
     });
-  });
 }
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.json({
-    message: err.message,
-    error: {}
-  });
+app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.json({
+        message: err.message,
+        error: {}
+    });
 });
 
 
