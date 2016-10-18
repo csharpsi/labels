@@ -4,13 +4,13 @@ var model = require('./base');
 var Sequelize = require('sequelize');
 
 let definition = {
-    accountId: {
+    account_id: {
         type: Sequelize.BIGINT,
         primaryKey: true,
         autoIncrement: true
     },
     name: Sequelize.TEXT,
-    apiKey: Sequelize.TEXT
+    api_key: Sequelize.TEXT
 };
 
 let config = {

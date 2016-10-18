@@ -7,7 +7,7 @@ let Sequelize = require('sequelize');
 let setPasswordHash = (user, options, cb) => {
     bcrypt.hash(user.get('password'), user.get('salt'), null, (err, hash) => {
         if (err) return cb(err);
-        user.set('passwordHash', hash);
+        user.set('password_hash', hash);
         return cb(null, options);
     });
 };
@@ -28,7 +28,7 @@ let buildUser = (user, options, cb) => {
 };
 
 let definition = {
-    userId: {
+    user_id: {
         type: Sequelize.BIGINT,
         primaryKey: true,
         autoIncrement: true
@@ -40,15 +40,15 @@ let definition = {
             isEmail: true
         }
     },
-    firstName: {
+    first_name: {
         type: Sequelize.TEXT,
         allowNull: false
     },
-    lastName: {
+    last_name: {
         type: Sequelize.TEXT,
         allowNull: false
     },
-    isAdmin: {
+    is_admin: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false
@@ -68,7 +68,7 @@ let definition = {
     salt: {
         type: Sequelize.VIRTUAL
     },
-    passwordHash: {
+    password_hash: {
         type: Sequelize.TEXT,
         validate: {
             notEmpty: true
@@ -79,7 +79,7 @@ let definition = {
 let config = {
     instanceMethods: {
         authenticate: function (value) {
-            if (bcrypt.compareSync(value, this.passwordHash)) {
+            if (bcrypt.compareSync(value, this.password_hash)) {
                 return this;
             }
             else {

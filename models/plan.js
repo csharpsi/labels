@@ -4,7 +4,7 @@ var model = require('./base');
 var Sequelize = require('sequelize');
 
 let definition = {
-    planId: {
+    plan_id: {
         type: Sequelize.TEXT,
         primaryKey: true,
         validate: {
@@ -16,19 +16,19 @@ let definition = {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: true
     },
-    maxApiRequestsPerSecond: {
+    max_api_requests_per_second: {
         type: Sequelize.INTEGER,
         allowNull: true
     },
-    maxTypes: {
+    max_types: {
         type: Sequelize.INTEGER,
         allowNull: true
     },
-    maxNamespacesPerType: {
+    max_namespaces_per_type: {
         type: Sequelize.INTEGER,
         allowNull: true
     },
-    maxLabelsPerNamespace: {
+    max_labels_per_namespace: {
         type: Sequelize.INTEGER,
         allowNull: true
     }

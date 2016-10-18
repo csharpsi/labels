@@ -10,9 +10,9 @@ router.get('/', (req, res, next) => {
     res.render('users/index');
 });
 
-router.get('/profile/:userId', (req, res) => {
+router.get('/:userId/profile', (req, res) => {
 
-    models.user.findOne({ where: { userId: req.params.userId } })
+    models.user.findOne({ where: { user_id: req.params.userId } })
         .then((instance) => {
             if (!instance) {
                 res.redirect('/404');
@@ -34,12 +34,12 @@ router.post('/new', (req, res) => {
     let newUser = {
         email: req.body.email,
         password: req.body.pwd,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName
+        first_name: req.body.firstName,
+        last_name: req.body.lastName
     };
     models.user.create(newUser)
         .then((user) => {
-            res.redirect(`/users/profile/${user.userId}`);
+            res.redirect(`/users/${user.user_id}/profile`);
         })
         .catch((err) => {
             res.render('users/new', { err, profile: newUser });

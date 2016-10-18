@@ -4,14 +4,14 @@ var model = require('./base');
 var Sequelize = require('sequelize');
 
 let definition = {
-    labelId: {
+    label_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    labelType: Sequelize.TEXT,
+    label_type: Sequelize.TEXT,
     namespace: Sequelize.TEXT,
-    labelKey: Sequelize.TEXT,
+    label_key: Sequelize.TEXT,
     language: Sequelize.TEXT,
     text: Sequelize.TEXT
 };
@@ -20,7 +20,7 @@ let config = {
     indexes: [{
         unique: true,
         name: 'unique_label_key_language_account',
-        fields: ['labelKey', 'language', 'accountId']
+        fields: ['label_key', 'language', 'account_id']
     }],
     classMethods: {
         associate: function (models) {

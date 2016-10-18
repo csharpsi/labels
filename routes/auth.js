@@ -27,4 +27,12 @@ router.post('/signin', (req, res) => {
     });
 });
 
+/**
+ * Sign out and redirect to root
+ */
+router.get('/signout', (req, res) => {
+    utils.destroyAuthCookie(res);
+    res.redirect('/');
+});
+
 module.exports = router;

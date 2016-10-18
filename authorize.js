@@ -2,7 +2,7 @@
 
 let models = require('./models');
 
-module.exports = function (req, res, next) {
+let authorizer = function (req, res, next) {
     let token = req.signedCookies["_uauth"];
     if (!token) {
         res.redirect('/auth/signin');
@@ -21,3 +21,15 @@ module.exports = function (req, res, next) {
         next();
     });
 };
+
+module.exports = authorizer;
+module.exports.admin = function (req, res, next) {
+    authorizer(req, res, () => {
+        if (req.user.is_admin !== true) {
+            res.redirect('/404');
+        }
+        else {
+            next();
+        }
+    });
+}

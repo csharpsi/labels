@@ -39,6 +39,11 @@ module.exports = {
             },
             created_at: Sequelize.DATE,
             updated_at: Sequelize.DATE
+        }).then(() => {
+            return queryInterface.addIndex('lab_user', ['email'], {
+                indexName: 'unique_user_email',
+                indiciesType: 'UNIQUE'
+            });
         });
     },
 

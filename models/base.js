@@ -9,24 +9,6 @@ module.exports = function (name, definition, options) {
             underscored: true
         };
 
-        Object.keys(definition).forEach((key) => {
-            let property = definition[key];
-            let fieldName = S(key).underscore();
-
-            // if already an object, we can assume the `type` property has been set
-            if (typeof property === "object") {
-                property.field = fieldName;
-                definition[key] = property;
-            }
-            else {
-                definition[key] = {
-                    type: property,
-                    field: fieldName
-                }
-            }
-
-        });
-
         // noop
         let extend = () => null;
 
