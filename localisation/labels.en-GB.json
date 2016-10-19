@@ -19,5 +19,13 @@
     "placeholder_signUp_accountName": "Your company's name / account name",
     "label_signUp_submit": "Create your free account",
     "error_api_missingApiKey": "Missing API Key from request",
-    "error_api_invalidApiKey": "Invalid API Key"
+    "error_api_invalidApiKey": "Invalid API Key",
+    "error_webui_labelsListError": "Failed to load a list of your labels",
+    "label_labels_listTitle": "Labels",
+    "label_labels_uploadButton": "Bulk Upload",
+    "label_labels_languageCodeHeading": "Language Code",
+    "label_labels_keyHeading": "Key",
+    "label_labels_valueHeading": "Value",
+    "label_labels_createdHeading": "Created",
+    "label_labels_noResults": "No Results"
 }

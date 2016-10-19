@@ -16,7 +16,7 @@ let definition = {
 let config = {
     classMethods: {
         associate: function (models) {
-            this.hasMany(models.label, { as: 'Labels' });
+            this.hasMany(models.label, { as: 'Labels', foreignKey: 'account_id' });
             this.hasMany(models.user, { as: 'Users', foreignKey: 'account_id' });
             this.belongsTo(models.plan, { as: 'Plan', foreignKey: 'plan_id' });
         }

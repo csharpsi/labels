@@ -40,6 +40,7 @@ let authorize = require('./authorize');
  */
 app.use('/', require('./routes/index'));
 app.use('/users', authorize, require('./routes/users'));
+app.use('/labels', authorize, require('./routes/labels'));
 app.use('/account', require('./routes/account'));
 app.use('/auth', require('./routes/auth'));
 app.use('/api', require('./routes/api/index'));

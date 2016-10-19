@@ -5,7 +5,7 @@ var router = express.Router();
 var models = require('../../models');
 var fs = require('fs');
 var path = require('path');
-var attributes = [['label_key', 'key'], ['text', 'value']]; // select key, text as value from...
+var attributes = [['label_key', 'key'], ['text', 'value']];
 
 /**
  * GET full dictionary for the given language

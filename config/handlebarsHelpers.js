@@ -1,5 +1,6 @@
 "use strict";
 var hbs = require('hbs');
+var moment = require('moment');
 var Catalogue = require('../catalogue');
 
 class HandlebarsRegister {
@@ -12,6 +13,9 @@ class HandlebarsRegister {
             return Catalogue.getString(key);
         });
 
+        hbs.registerHelper('date', (val, format) => {
+            return moment(val).format(format);
+        });
     }
 }
 
