@@ -3,6 +3,20 @@
 <div>
 	<a href="/labels/upload">{{cat 'label_labels_uploadButton'}}</a>
 </div>
+<div>
+	<form action="/labels" method="POST">
+		<select name="lang" onchange="this.form.submit()">
+            <option value="">{{cat 'label_labels_unselectedFilter'}}</option>
+            {{#each languages}}
+            {{#eq this.language ../lang}}            
+            <option value="{{this.language}}" selected>{{this.language}}</option>
+            {{else}}
+            <option value="{{this.language}}">{{this.language}}</option>
+            {{/eq}}            
+            {{/each}}
+        </select>
+	</form>
+</div>
 
 <table>
 	<thead>
@@ -14,16 +28,16 @@
 		</tr>
 	</thead>
 	<tbody>
+		{{#each results}}
 		<tr>
-			{{#each results}}
 			<td>{{this.language}}</td>
 			<td>{{this.label_key}}</td>
 			<td>{{this.text}}</td>
 			<td>{{date this.created_at 'DD MMM YYYY'}}</td>
-			{{else}}
-			<td colspan="4">{{cat 'label_labels_noResults'}}</td>
-			{{/each}}
-
 		</tr>
+		{{else}}
+		<td colspan="4">{{cat 'label_labels_noResults'}}</td>
+		</tr>
+		{{/each}}
 	</tbody>
 </table>

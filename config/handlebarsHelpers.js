@@ -9,12 +9,17 @@ class HandlebarsRegister {
         /**
          * Provides template support for localised labels
          */
-        hbs.registerHelper('cat', (key) => {
-            return Catalogue.getString(key);
-        });
+        hbs.registerHelper('cat', (key) => Catalogue.getString(key));
 
-        hbs.registerHelper('date', (val, format) => {
-            return moment(val).format(format);
+        hbs.registerHelper('date', (val, format) => moment(val).format(format));
+
+        hbs.registerHelper('eq', function (left, right, options) {
+            if (left === right) {
+                return options.fn(this);
+            }
+            else {
+                return options.inverse(this);
+            }
         });
     }
 }

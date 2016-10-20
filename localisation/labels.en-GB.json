@@ -1,5 +1,5 @@
 {
-    "title": "Express UK",
+    "label_home_title": "Express UK",
     "validation_user_passwordTooShort": "Please choose a longer password",
     "validation_auth_incorrectUserOrPassword": "Incorrect username or password",
     "view_label_authSignInTitle": "Sign In",
@@ -27,5 +27,9 @@
     "label_labels_keyHeading": "Key",
     "label_labels_valueHeading": "Value",
     "label_labels_createdHeading": "Created",
-    "label_labels_noResults": "No Results"
+    "label_labels_noResults": "No Results",
+    "error_labels_emptyDictionary": "Invalid file contents. Ensure the file contains a JSON dictionary",
+    "validation_labels_noLanguageCode": "Please provide a language code (e.g. en-GB)",
+    "error_labels_invalidDictionaryKeys": "The translation file contains keys that are not in the correct format",
+    "label_labels_unselectedFilter": "--filter by language--"
 }

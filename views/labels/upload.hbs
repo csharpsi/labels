@@ -1,4 +1,9 @@
+{{#if err}}
+<p style="color:red;">{{err}}</p>
+{{/if}}
+
 <form action="/labels/upload" method="POST" enctype="multipart/form-data">
-	<input type="file" name="zipfile" />
+	<input type="file" name="translation" required />
+	<input type="text" name="lang" placeholder="Language Code (e.g. en-GB)" required />
 	<button type="submit">Upload</button>
 </form>
