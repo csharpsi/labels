@@ -10,18 +10,43 @@ var multer = require('multer');
 var storage = multer.memoryStorage();
 var upload = multer({ storage });
 
+const defaultLimit = 100;
+const defaultOffset = 0;
+
 /**
  * list of labels for currently logged in user's account'
  */
 router.get('/', (req, res) => {
     const lang = req.query.lang;
+    const type = req.query.type;
+    const ns = req.query.ns;    
     let where = {
         account_id: req.user.account_id
     };
 
     if (lang) {
-        where.language = lang;
+        where["language"] = lang;
     }
+
+    if (type) {
+        where["label_type"] = type;
+    }
+
+    if (ns) {
+        where["namespace"] = ns;
+    }
+
+    let limit = parseInt(req.query.size || defaultLimit);
+
+    if(isNaN(limit)) {
+        limit = defaultLimit;
+    }
+
+    let offset = parseInt(req.query.offset || defaultOffset);
+
+    if(isNaN(offset)){
+        offset = defaultOffset;
+    }    
 
     models.sequelize.Promise.all([
         models.label.findAll({
@@ -31,12 +56,26 @@ router.get('/', (req, res) => {
         }),
         models.label.findAll({
             where: where,
-            limit: 50,
-            offset: req.query.offset || 0
+            attributes: ['namespace'],
+            group: ['namespace']
+        }),
+        models.label.findAll({
+            where: where,
+            attributes: ['label_type'],
+            group: ['label_type']
+        }),
+        models.label.findAndCountAll({
+            where: where,
+            limit: limit,
+            offset: offset*limit
         })
-    ]).spread((languages, results) => {
-        //const languages = results.map((r) => r.language).filter((val, index, self) => self.indexOf(val) === index);
-        res.render('labels/list', { results, languages, lang });
+    ]).spread((languages, namespaces, types, model) => {
+        const pageStart = (offset*limit)+1;
+        let pageEnd = limit*(offset+1);
+        if(pageEnd > model.count){
+            pageEnd = model.count;
+        }        
+        res.render('labels/list', { model, languages, namespaces, types, lang, type, ns, pageStart, pageEnd });
     }).catch((err) => {
         console.log(err);
         res.render('error', { message: Catalogue.getString('error_webui_labelsListError'), error: err });
@@ -50,7 +89,7 @@ router.post('/', (req, res) => {
     let filters = {
         lang: req.body.lang,
         type: req.body.type,
-        namespace: req.body["namespace"]
+        ns: req.body.ns
     };
 
     Object.keys(filters).forEach((key) => {

@@ -31,5 +31,6 @@
     "error_labels_emptyDictionary": "Invalid file contents. Ensure the file contains a JSON dictionary",
     "validation_labels_noLanguageCode": "Please provide a language code (e.g. en-GB)",
     "error_labels_invalidDictionaryKeys": "The translation file contains keys that are not in the correct format",
-    "label_labels_unselectedFilter": "--filter by language--"
+    "label_labels_unselectedFilter": "--filter by language--",
+    "label_labels_of": "of"
 }

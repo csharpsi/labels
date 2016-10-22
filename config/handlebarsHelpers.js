@@ -21,6 +21,15 @@ class HandlebarsRegister {
                 return options.inverse(this);
             }
         });
+
+        hbs.registerHelper('neq', function(left, right, options){
+            if(left !== right){
+                return options.fn(this);
+            }
+            else {
+                return options.inverse(this);
+            }
+        });
     }
 }
 

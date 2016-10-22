@@ -5,18 +5,45 @@
 </div>
 <div>
 	<form action="/labels" method="POST">
+		{{#if lang}}
+		<button type="button" onclick="resetFilter('lang_hidden', this)">{{lang}} x</button>
+		<input type="hidden" name="lang" id="lang_hidden" value="{{lang}}" /> 
+        {{else}}
 		<select name="lang" onchange="this.form.submit()">
-            <option value="">{{cat 'label_labels_unselectedFilter'}}</option>
+            <option value="">{{cat 'label_labels_unselectedFilter'}}</option>            
             {{#each languages}}
-            {{#eq this.language ../lang}}            
-            <option value="{{this.language}}" selected>{{this.language}}</option>
-            {{else}}
-            <option value="{{this.language}}">{{this.language}}</option>
-            {{/eq}}            
+            <option value="{{this.language}}" {{#eq this.language ../lang}}selected{{/eq}}>{{this.language}}</option>            
+            {{/each}}
+        </select> 
+        {{/if}} 
+        
+        {{#if type}}
+		<button type="button" onclick="resetFilter('type_hidden', this)">{{type}} x</button>
+		<input type="hidden" name="type" id="type_hidden" value="{{type}}" /> 
+        {{else}}
+		<select name="type" onchange="this.form.submit()">
+            <option value="">{{cat 'label_labels_unselectedFilter'}}</option>
+            {{#each types}}
+            <option value="{{this.label_type}}" {{#eq this.label_type ../type}}selected{{/eq}}>{{this.label_type}}</option>
+            {{/each}}
+        </select> 
+        {{/if}}
+
+        {{#if ns}}
+        <button type="button" onclick="resetFilter('ns_hidden', this)">{{ns}} x</button>
+        <input type="hidden" name="ns" id="ns_hidden" value="{{ns}}" />
+        {{else}}
+		<select name="ns" onchange="this.form.submit()">
+            <option value="">{{cat 'label_labels_unselectedFilter'}}</option>
+            {{#each namespaces}}
+            <option value="{{this.namespace}}" {{#eq this.namespace ../ns}}selected{{/eq}}>{{this.namespace}}</option>
             {{/each}}
         </select>
+        {{/if}}
 	</form>
 </div>
+
+<p>{{pageStart}} - {{pageEnd}} {{cat 'label_labels_of'}} {{model.count}}</p>
 
 <table>
 	<thead>
@@ -27,8 +54,8 @@
 			<th>{{cat 'label_labels_createdHeading'}}</th>
 		</tr>
 	</thead>
-	<tbody>
-		{{#each results}}
+	<tbody>        
+		{{#each model.rows}}
 		<tr>
 			<td>{{this.language}}</td>
 			<td>{{this.label_key}}</td>
@@ -41,3 +68,10 @@
 		{{/each}}
 	</tbody>
 </table>
+
+<script type="text/javascript">
+    function resetFilter(id, el){
+        document.getElementById(id).value = '';
+        el.form.submit();
+    }
+</script>
