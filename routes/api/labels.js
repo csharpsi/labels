@@ -64,42 +64,53 @@ router.get('/:lang/type/:type/namespace/:ns', (req, res) => {
 });
 
 /**
- * POST install new data from the localisation directory
+ * POST install new data and append to existing
  */
-router.post('/__install-data', (req, res) => {
-    let dirPath = path.join(__dirname, '..', '..', 'localisation');
-    let dir = fs.readdirSync(dirPath);
-    let installData = [];
+router.post('/:lang/append', (req, res) => {
+    const dictionary = parseTranslation(req.body, req.params.lang, req.account.account_id);
+    const keys = dictionary.map((label) => label.label_key).filter((val, idx, arr) => arr.indexOf(val) === idx);
 
-    dir.forEach((filename) => {
-        let contents = fs.readFileSync(path.join(dirPath, filename));
-        let parts = filename.split('.');
-        let lang = parts[1];
-        let data = JSON.parse(contents);
-        let dictionary = parseTranslation(data, lang);
-        installData = installData.concat(dictionary);
-    });
-
-    models.label.destroy({ truncate: true }).then(() => {
-        models.label.bulkCreate(installData)
-            .then(() => {
-                res.status(201).json({ rowCount: installData.length });
-            })
-            .catch((err) => {
-                res.status(500).json({ err: err.original.detail });
-            });
+    models.label.count({        
+        where: {
+            label_key: {$in: keys}, 
+            language: req.params.lang, 
+            account_id: req.account.account_id
+        }
+    })
+    .then((result) => {
+        if(result > 0){            
+            res.status(409).json({err: 'conflicting keys found'});
+            throw new Error(409);
+        }        
+    })
+    .then(() => {
+        return models.label.bulkCreate(dictionary);
+    })
+    .then(() => {
+        res.status(200).json({created: dictionary.length});
+    })
+    .catch((e) => {
+        console.error(e);
     });
 });
 
-function parseTranslation(dictionary, lang) {
+/**
+ * PUT update the text for the given id
+ */
+router.put('/:lang/:id', (req, res) => {
+    const where = { language: req.params.lang, label_key: req.params.key, account_id: req.account.account_id };
+
+});
+
+function parseTranslation(dictionary, language, accountId) {
     let result = [];
     let keys = Object.keys(dictionary);
 
     keys.forEach((key) => {
         let parts = key.split('_');
-        let type = parts[0];
+        let label_type = parts[0];
         let namespace = parts[1];
-        const obj = { type, namespace, key, text: dictionary[key], lang };
+        const obj = { label_type, namespace, label_key: key, text: dictionary[key], language, account_id: accountId };
         result.push(obj);
     });
 
