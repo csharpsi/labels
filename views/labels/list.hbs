@@ -5,6 +5,7 @@
 </div>
 <div>
 	<form action="/labels" method="POST">
+        <input type="hidden" name="_csrf" value="{{token}}"/>
 		{{#if lang}}
 		<button type="button" onclick="resetFilter('lang_hidden', this)">{{lang}} x</button>
 		<input type="hidden" name="lang" id="lang_hidden" value="{{lang}}" /> 
@@ -55,12 +56,31 @@
 		</tr>
 	</thead>
 	<tbody>        
-		{{#each model.rows}}
-		<tr>
+		{{#each model.rows}}                
+		<tr {{#eq ../row this.label_id}}style="background-color:#ffe89e;"{{/eq}}>
+            {{#eq editId this.label_id}}
+            <form action="/labels/edit/{{this.label_id}}" method="POST">
+                <td>{{this.language}}</td>
+                <td>
+                    <input type="text" name="key" value="{{this.label_key}}"/>
+                </td>
+                <td>
+                    <input type="text" name="text" value="{{this.text}}" />
+                </td>
+                <td>{{date this.created_at 'DD MMM YYYY'}}</td>
+                <td>
+                    <button type="submit">Save</button>
+                </td>
+            </form>
+            {{else}}
 			<td>{{this.language}}</td>
 			<td>{{this.label_key}}</td>
 			<td>{{this.text}}</td>
 			<td>{{date this.created_at 'DD MMM YYYY'}}</td>
+            <td>
+                <a href="/labels/edit/{{this.label_id}}">Edit</a>
+            </td>
+            {{/eq}}
 		</tr>
 		{{else}}
 		<td colspan="4">{{cat 'label_labels_noResults'}}</td>

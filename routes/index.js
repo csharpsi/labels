@@ -6,7 +6,7 @@ var Catalogue = require('../catalogue');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', { title: Catalogue.getString('title'), lang: Catalogue.currentLanguage });
+  res.render('index', { lang: Catalogue.currentLanguage });
 });
 
 router.get('/lang/:lang', (req, res) => {

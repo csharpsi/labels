@@ -5,6 +5,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var csrf = require('csurf');
 var bodyParser = require('body-parser');
 var Catalogue = require('./catalogue');
 var hbsRegister = require('./config/handlebarsHelpers');
@@ -25,7 +26,10 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('i am the lizard queen'));
+app.use(csrf({ cookie:true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.disable('x-powered-by');
 
 app.use((req, res, next) => {
     let lang = req.cookies.lang || "en-GB";
@@ -59,7 +63,7 @@ app.use(function (req, res, next) {
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
-        res.json({
+        res.render('error', {
             message: err.message,
             error: err
         });
@@ -70,7 +74,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
     res.status(err.status || 500);
-    res.json({
+    res.render('error', {
         message: err.message,
         error: {}
     });

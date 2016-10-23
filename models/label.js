@@ -26,6 +26,28 @@ let config = {
         associate: function (models) {
             this.belongsTo(models.account, { as: 'Account', foreignKey: 'account_id' });
         }
+    },
+    instanceMethods: {
+        setLabelKey: function(key){
+            if(key === this.label_key){
+                return false;
+            }
+            
+            const parts = key.split('_');
+
+            if(parts.length !== 3){
+                throw new Error(Catalogue.getString('validation_apiLabels_incorrectKeyFormat', {key}));
+            }
+
+            const type = parts[0];
+            const ns = parts[1];                
+
+            this.label_key = key;
+            this.label_type = type;
+            this["namespace"] = ns; // avoid keyword clash
+
+            return true;
+        }
     }
 };
 

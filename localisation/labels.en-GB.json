@@ -1,5 +1,5 @@
 {
-    "label_home_title": "Express UK",
+    "label_app_title": "Labels - Localisation as a Service",
     "validation_user_passwordTooShort": "Please choose a longer password",
     "validation_auth_incorrectUserOrPassword": "Incorrect username or password",
     "view_label_authSignInTitle": "Sign In",
@@ -32,5 +32,6 @@
     "validation_labels_noLanguageCode": "Please provide a language code (e.g. en-GB)",
     "error_labels_invalidDictionaryKeys": "The translation file contains keys that are not in the correct format",
     "label_labels_unselectedFilter": "--filter by language--",
-    "label_labels_of": "of"
+    "label_labels_of": "of",
+    "validation_apiLabels_incorrectKeyFormat": "The key '{key}' is not in the correct format of 'type_namespace_value'"
 }

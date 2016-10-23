@@ -1,0 +1,14 @@
+<h1>Editing {{label.label_key}}</h1>
+
+<form action="/labels/edit/{{label.label_id}}" method="POST">
+    <input type="hidden" name="_csrf" value="{{token}}"/>
+    <div>
+        <input type="text" name="label_key" value="{{label.label_key}}" />
+    </div>
+    <div>
+        <input type="text" name="text" value="{{label.text}}" />
+    </div>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+</form>

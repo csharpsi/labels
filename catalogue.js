@@ -25,12 +25,28 @@ class Catalogue {
         dictionary = JSON.parse(contents);
     }
 
-    getString(key, defaultValue) {
+    getString(key, replacementMap) {
         if(!Object.keys(dictionary).length) {
             throw new Error("Labels dictionary has not been initialised");
         }
 
-        return dictionary[key] || defaultValue;
+        var text = dictionary[key];
+
+        if(!text || !replacementMap) {
+            return text;
+        }
+
+        const dic = Object.keys(replacementMap).map((key) => {
+            return {key, value: replacementMap[key]};
+        });
+
+        if(dic.length > 0){
+            dic.forEach((dic) => {
+                text = text.replace(`{${dic.key}}`, dic.value);
+            });
+        }
+
+        return text;
     }
 }
 

@@ -75,7 +75,19 @@ router.get('/', (req, res) => {
         if(pageEnd > model.count){
             pageEnd = model.count;
         }        
-        res.render('labels/list', { model, languages, namespaces, types, lang, type, ns, pageStart, pageEnd });
+        res.render('labels/list', { 
+            model, 
+            languages, 
+            namespaces, 
+            types, 
+            lang, 
+            type, 
+            ns, 
+            pageStart, 
+            pageEnd, 
+            token: req.csrfToken(),
+            row: req.query.row 
+        });
     }).catch((err) => {
         console.log(err);
         res.render('error', { message: Catalogue.getString('error_webui_labelsListError'), error: err });
@@ -99,6 +111,26 @@ router.post('/', (req, res) => {
     });
 
     res.redirect(`/labels?${querystring.stringify(filters)}`);
+});
+
+router.get('/edit/:id', (req, res) => {
+    models.label.findOne({where: {label_id: req.params.id, account_id: req.user.account_id}})
+        .then((label) => {
+            res.render('labels/edit', {label: label.get({plain:true}), token: req.csrfToken()});
+        });
+});
+
+router.post('/edit/:id', (req, res) => {
+    models.label.findOne({where: {label_id: req.params.id, account_id: req.user.account_id}})
+        .then((label) => {
+            const fields = ['label_key', 'text', 'label_type', 'namespace']; 
+            label.setLabelKey(req.body.label_key);
+            label.text = req.body.text;
+            return label.save({fields});
+        })
+        .then((label) => {
+            return res.redirect(`/labels?row=${label.label_id}`);
+        });
 });
 
 /**

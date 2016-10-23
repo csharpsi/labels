@@ -6,6 +6,7 @@ var models = require('../../models');
 var fs = require('fs');
 var path = require('path');
 var attributes = [['label_key', 'key'], ['text', 'value']];
+var Catalogue = require('../../catalogue');
 
 /**
  * GET full dictionary for the given language
@@ -14,7 +15,7 @@ router.get('/:lang', (req, res) => {
     const where = { language: req.params.lang, account_id: req.account.account_id };
     models.label.findAll({ attributes, where })
         .then((labels) => {
-            res.status(200).json({ result: toResult(labels), language: req.params.lang });
+            res.status(200).json({ result: toResult(labels), language: req.params.lang });            
         })
         .catch((err) => {
             res.status(500).json({ err });
@@ -97,10 +98,44 @@ router.post('/:lang/append', (req, res) => {
 /**
  * PUT update the text for the given id
  */
-router.put('/:lang/:id', (req, res) => {
-    const where = { language: req.params.lang, label_key: req.params.key, account_id: req.account.account_id };
+router.put('/:id', (req, res) => {
+    const where = {
+        label_id: req.params.id, 
+        account_id: req.account.account_id 
+    };
+    const select = ['label_id', 'label_key', 'text'];
 
+    models.label.findOne({where: where, attributes: select})
+        .then((label) => {
+            const fields = ['label_key', 'text', 'label_type', 'namespace']; 
+
+            if(req.body.label_key){
+                updateLabelKeyParts(res, req.body.label_key, label);
+            }
+
+            if(req.body.text){
+                label.text = req.body.text;
+            }            
+
+            return label.save({fields});
+        })
+        .then((label) => {
+            res.status(200).json({result: label});
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).json({err: err.message || err});            
+        });
 });
+
+function updateLabelKeyParts(res, key, label){
+    try{
+        return label.setLabelKey(key);
+    }
+    catch(e) {
+        return res.status(400).json({err: e.toString()});
+    }    
+}
 
 function parseTranslation(dictionary, language, accountId) {
     let result = [];
